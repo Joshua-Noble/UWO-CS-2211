@@ -1,0 +1,49 @@
+#!/bin/bash
+# Student Name: Joshua Noble
+# Student Number: 250700795
+# This script performs various operations regarding numbers on the
+# given file, such as counting the number of lines, manipulating
+# numbers in the file, and finding the largest 4 numbers in the file.
+# It accepts four options (0, 1, 2, 3), along with a file name as arguments.
+
+# This if statement checks to see if any arguments were given, and prints
+# info about the arguments, with an exit status of 1 (error)
+if [ $# -eq 0 ]; then
+        echo "Usage: nums option filename"
+        exit 1
+fi
+
+# This if statement checks to see if enough arguments were given, and
+# prints an error message if only one argument was given, with an exit status of 2 (error)
+if [ $# -eq 1 ] && [[ $1 = [0-3] ]]; then # Use double brackets [[ ]] for grep to check if option number is valid
+        echo "Error: no filename given!"
+        exit 2
+fi
+
+# This if statement checks to see if the given file exists, and prints
+# an error message if it can't be found, with an exit status of 3 (error)
+if [ ! -f $2 ]; then
+        echo "$2 does not exist!"
+        exit 3
+fi
+
+# Once all checks have been passed, we use a case statement to handle
+# each individual option separately, including other, undefined, option numbers
+case $1 in
+        0)
+                cat $2 | wc -l
+                ;;
+        1)
+                cat $2 | tr -s '[0-9]' '*' | tr a-z A-Z
+                ;;
+        2)
+                grep -Ei '^([a-z])([a-z])([a-z])([a-z])\3\2\1$' $2
+                ;;
+        3) # Instead of cat, use grep to show only numbers in file, then sort (descending) and find top 4 with head
+                grep -Eo '[0-9]+' $2 | sort -nr | head -4
+                ;;
+        *)
+                echo "Invalid option!"
+                exit 4
+                ;;
+esac

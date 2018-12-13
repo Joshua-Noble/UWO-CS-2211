@@ -1,0 +1,30 @@
+#!/bin/bash
+# Student Name: Joshua Noble
+# Student Number: 250700795
+# This script takes an unlimited number of integer arguments and
+# calculates the average of all arguments, rounded to two decimal
+# places. It will print an error and exit if no arguments are given.
+
+# This if statement checks to see if the number of arguments ($#) equals 0,
+# printing an error message if there are no arguments
+if [ $# -eq 0 ]; then
+        echo "Need at least one argument!"
+        exit 1
+fi
+
+numInt=$#
+total=0
+average=0
+
+# This while loop uses shift to cycle through all arguments and
+# keep their sum stored as the $total variable
+while [ $# -gt 0 ]; do
+        total=$(( total + $1))
+        shift
+done
+
+# Using a pipe and the bc command, we can perform floating point arithmetic
+# and round our answer to 2 decimal places
+average=`echo "scale=2; ($total / $numInt)" | bc`
+
+echo "$average"

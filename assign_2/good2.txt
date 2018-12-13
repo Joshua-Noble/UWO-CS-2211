@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo
+hour=`date +%H`
+
+case $hour in
+        0[0-9]|10|11)
+                echo "GOOD MORNING"
+                ;;
+        1[2-7])
+                echo "GOOD AFTERNOON"
+                ;;
+        *)
+                echo "GOOD EVENING"
+                ;;
+esac
+
+echo

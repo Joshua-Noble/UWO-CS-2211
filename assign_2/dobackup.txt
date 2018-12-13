@@ -1,0 +1,31 @@
+#!/bin/bash
+# Student Name: Joshua Noble
+# Student Number: 250700795
+# This script takes a directory name from the user, then creates a backup directory in
+# the current working directory, along with a backup tar file of the directory/contents and
+# saves the tar file on the course server.
+
+echo -n "Input a directory name: " # Tell the user what input we are looking for
+read dirName # Save input from the user as variable $dirName
+
+if [ ! -d $dirName ]; then # Check to see if the given directory exists in cwd
+        echo "Error: Directory does not exist!" # Print error message if it doesn't exist
+        exit 1 # Exit with non-zero (error) status code
+fi # End if statement
+
+if [ -d "backup" ]; then # Check to see if a directory named "backup" already exists in cwd
+        rm -r backup # Remove backup directory and all files inside
+fi # End if statement
+
+cp -r $dirName backup # Copy the directory given (and all files inside) to a new "backup" directory
+
+tar -cf backup.tar backup # Create a tar (tape archive) of the backup directory named backup.tar
+
+day=`date +%d` # Save current day (with a leading 0 if one digit) as $day variable
+month=`date +%m` # Save current month (with a leading 0 if one digit) as $month variable
+year=`date +%Y` # Save current 4 digit year as $year variable
+fileName="backup-$day-$month-$year.tar" # Create $fileName variable storing name of new backup tar file with current date
+
+mv backup.tar $fileName # Use mv command to rename backup.tar to the appropriate $fileName created above
+
+scp $fileName $USER@$HOSTNAME:~/mybackups # Use SCP to send a secure copy of the newly created file to the ~/mybackups folder on the course server
